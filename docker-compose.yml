@@ -1,0 +1,20 @@
+version: '3.8'
+
+services:
+  unit-converter:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: unit-converter
+    restart: unless-stopped
+    environment:
+      - PORT=5000
+      - FLASK_ENV=production
+    expose:
+      - "5000"
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:5000/"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 10s

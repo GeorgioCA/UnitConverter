@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Unit Converter</title>
+    <link rel="icon" type="image/svg+xml" href="{{ url_for('static', filename='favicon.svg') }}">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        dark: {
+                            900: '#0a0a0f',
+                            800: '#12121a',
+                            700: '#1a1a24',
+                            600: '#24242f',
+                            500: '#2e2e3a',
+                            400: '#3d3d4a',
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="bg-dark-900 text-gray-200 min-h-screen flex items-center justify-center">
+    <div class="w-full max-w-md p-8">
+        <h1 class="text-4xl font-bold text-center mb-8 text-white">Unit Converter</h1>
+        
+        <div class="bg-dark-800 rounded-2xl p-6 shadow-2xl border border-dark-600">
+            <div class="mb-4">
+                <label class="block text-sm font-medium mb-2 text-gray-400">Category</label>
+                <select id="category" class="w-full bg-dark-700 border border-dark-500 text-white rounded-lg p-3 focus:outline-none focus:border-blue-500">
+                    <option value="length">Length</option>
+                    <option value="weight">Weight</option>
+                    <option value="temperature">Temperature</option>
+                    <option value="volume">Volume</option>
+                    <option value="area">Area</option>
+                    <option value="speed">Speed</option>
+                    <option value="time">Time</option>
+                </select>
+            </div>
+
+            <div class="mb-4">
+                <label class="block text-sm font-medium mb-2 text-gray-400">From</label>
+                <input type="number" id="fromValue" class="w-full bg-dark-700 border border-dark-500 text-white rounded-lg p-3 focus:outline-none focus:border-blue-500" placeholder="Enter value">
+            </div>
+
+            <div class="mb-4">
+                <label class="block text-sm font-medium mb-2 text-gray-400">From Unit</label>
+                <select id="fromUnit" class="w-full bg-dark-700 border border-dark-500 text-white rounded-lg p-3 focus:outline-none focus:border-blue-500"></select>
+            </div>
+
+            <div class="mb-4">
+                <label class="block text-sm font-medium mb-2 text-gray-400">To Unit</label>
+                <select id="toUnit" class="w-full bg-dark-700 border border-dark-500 text-white rounded-lg p-3 focus:outline-none focus:border-blue-500"></select>
+            </div>
+
+            <div class="mb-6">
+                <label class="block text-sm font-medium mb-2 text-gray-400">Result</label>
+                <div id="result" class="w-full bg-dark-700 border border-dark-500 text-white rounded-lg p-3 text-xl font-semibold">-</div>
+            </div>
+
+            <button id="convertBtn" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold rounded-lg p-3 transition-colors">
+                Convert
+            </button>
+        </div>
+    </div>
+
+    <script>
+        const units = {
+            length: ['Meter', 'Kilometer', 'Centimeter', 'Millimeter', 'Mile', 'Yard', 'Foot', 'Inch'],
+            weight: ['Kilogram', 'Gram', 'Milligram', 'Pound', 'Ounce', 'Ton'],
+            temperature: ['Celsius', 'Fahrenheit', 'Kelvin'],
+            volume: ['Liter', 'Milliliter', 'Gallon', 'Quart', 'Pint', 'Cup', 'Fluid Ounce'],
+            area: ['Square Meter', 'Square Kilometer', 'Square Foot', 'Square Yard', 'Acre', 'Hectare'],
+            speed: ['m/s', 'km/h', 'mph', 'knot'],
+            time: ['Second', 'Minute', 'Hour', 'Day', 'Week', 'Month', 'Year']
+        };
+
+        const conversions = {
+            length: {
+                'Meter': 1,
+                'Kilometer': 1000,
+                'Centimeter': 0.01,
+                'Millimeter': 0.001,
+                'Mile': 1609.344,
+                'Yard': 0.9144,
+                'Foot': 0.3048,
+                'Inch': 0.0254
+            },
+            weight: {
+                'Kilogram': 1,
+                'Gram': 0.001,
+                'Milligram': 0.000001,
+                'Pound': 0.453592,
+                'Ounce': 0.0283495,
+                'Ton': 1000
+            },
+            volume: {
+                'Liter': 1,
+                'Milliliter': 0.001,
+                'Gallon': 3.78541,
+                'Quart': 0.946353,
+                'Pint': 0.473176,
+                'Cup': 0.236588,
+                'Fluid Ounce': 0.0295735
+            },
+            area: {
+                'Square Meter': 1,
+                'Square Kilometer': 1000000,
+                'Square Foot': 0.092903,
+                'Square Yard': 0.836127,
+                'Acre': 4046.86,
+                'Hectare': 10000
+            },
+            speed: {
+                'm/s': 1,
+                'km/h': 0.277778,
+                'mph': 0.44704,
+                'knot': 0.514444
+            },
+            time: {
+                'Second': 1,
+                'Minute': 60,
+                'Hour': 3600,
+                'Day': 86400,
+                'Week': 604800,
+                'Month': 2629746,
+                'Year': 31556952
+            }
+        };
+
+        const categorySelect = document.getElementById('category');
+        const fromUnitSelect = document.getElementById('fromUnit');
+        const toUnitSelect = document.getElementById('toUnit');
+        const fromValueInput = document.getElementById('fromValue');
+        const resultDiv = document.getElementById('result');
+        const convertBtn = document.getElementById('convertBtn');
+
+        function updateUnits() {
+            const category = categorySelect.value;
+            const unitList = units[category];
+            
+            fromUnitSelect.innerHTML = '';
+            toUnitSelect.innerHTML = '';
+            
+            unitList.forEach(unit => {
+                fromUnitSelect.add(new Option(unit, unit));
+                toUnitSelect.add(new Option(unit, unit));
+            });
+            
+            if (unitList.length > 1) {
+                toUnitSelect.selectedIndex = 1;
+            }
+            
+            resultDiv.textContent = '-';
+        }
+
+        function convertTemperature(value, from, to) {
+            let celsius;
+            
+            if (from === 'Celsius') celsius = value;
+            else if (from === 'Fahrenheit') celsius = (value - 32) * 5/9;
+            else if (from === 'Kelvin') celsius = value - 273.15;
+            
+            if (to === 'Celsius') return celsius;
+            else if (to === 'Fahrenheit') return celsius * 9/5 + 32;
+            else if (to === 'Kelvin') return celsius + 273.15;
+        }
+
+        function convert() {
+            const value = parseFloat(fromValueInput.value);
+            if (isNaN(value)) {
+                resultDiv.textContent = 'Enter a valid number';
+                return;
+            }
+
+            const category = categorySelect.value;
+            const from = fromUnitSelect.value;
+            const to = toUnitSelect.value;
+            
+            let result;
+            
+            if (category === 'temperature') {
+                result = convertTemperature(value, from, to);
+            } else {
+                const conversionTable = conversions[category];
+                const baseValue = value * conversionTable[from];
+                result = baseValue / conversionTable[to];
+            }
+            
+            resultDiv.textContent = result.toLocaleString(undefined, { maximumFractionDigits: 6 });
+        }
+
+        categorySelect.addEventListener('change', updateUnits);
+        convertBtn.addEventListener('click', convert);
+        fromValueInput.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') convert();
+        });
+
+        updateUnits();
+    </script>
+</body>
+</html>
