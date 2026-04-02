@@ -11,60 +11,121 @@
             theme: {
                 extend: {
                     colors: {
-                        dark: {
-                            900: '#0a0a0f',
-                            800: '#12121a',
-                            700: '#1a1a24',
-                            600: '#24242f',
-                            500: '#2e2e3a',
-                            400: '#3d3d4a',
+                        homarr: {
+                            100: '#E4E4E7',
+                            200: '#A1A1AA',
+                            300: '#71717A',
+                            400: '#52525B',
+                            500: '#3F3F46',
+                            600: '#27272A',
+                            700: '#18181B',
+                            800: '#121212',
+                            900: '#0A0A0A',
                         }
                     }
                 }
             }
         }
     </script>
+    <style>
+        body { font-family: system-ui, -apple-system, sans-serif; }
+        input[type="range"] { -webkit-appearance: none; height: 6px; border-radius: 3px; background: #3F3F46; }
+        input[type="range"]::-webkit-slider-thumb { -webkit-appearance: none; width: 16px; height: 16px; border-radius: 50%; background: #A1A1AA; cursor: pointer; }
+    </style>
 </head>
-<body class="bg-dark-900 text-gray-200 min-h-screen flex items-center justify-center">
-    <div class="w-full max-w-[240px] p-2">
-        
-        <div class="bg-dark-800 rounded-lg p-2 shadow-xl border border-dark-600 space-y-1">
-            <div>
-                <label class="block text-xs font-medium mb-0.5 text-gray-400">Category</label>
-                <select id="category" class="w-full bg-dark-700 border border-dark-500 text-white rounded p-2 text-sm focus:outline-none focus:border-blue-500">
-                    <option value="length">Length</option>
-                    <option value="weight">Weight</option>
-                    <option value="temperature">Temperature</option>
-                    <option value="volume">Volume</option>
-                    <option value="area">Area</option>
-                    <option value="speed">Speed</option>
-                    <option value="time">Time</option>
-                </select>
+<body class="bg-homarr-900 text-homarr-100 min-h-screen flex items-center justify-center p-4">
+    <div class="w-full max-w-md">
+        <div class="bg-homarr-700 rounded-2xl p-6 shadow-2xl border border-homarr-600 space-y-5">
+            <div class="text-center">
+                <h1 class="text-2xl font-bold text-homarr-100">Unit Converter</h1>
+                <p class="text-homarr-300 text-sm mt-1">Convert between different units</p>
+            </div>
+            
+            <div class="space-y-4">
+                <div>
+                    <label class="block text-sm font-medium text-homarr-200 mb-2">Category</label>
+                    <select id="category" class="w-full bg-homarr-600 border border-homarr-500 text-homarr-100 rounded-lg px-4 py-3 text-sm focus:outline-none focus:border-homarr-300 focus:ring-1 focus:ring-homarr-300 transition-all"></select>
+                </div>
+
+                <div>
+                    <label class="block text-sm font-medium text-homarr-200 mb-2">Value</label>
+                    <input type="number" id="fromValue" class="w-full bg-homarr-600 border border-homarr-500 text-homarr-100 rounded-lg px-4 py-3 text-sm focus:outline-none focus:border-homarr-300 focus:ring-1 focus:ring-homarr-300 transition-all placeholder-homarr-400" placeholder="Enter value">
+                </div>
+
+                <div class="grid grid-cols-2 gap-4">
+                    <div>
+                        <label class="block text-sm font-medium text-homarr-200 mb-2">From</label>
+                        <select id="fromUnit" class="w-full bg-homarr-600 border border-homarr-500 text-homarr-100 rounded-lg px-4 py-3 text-sm focus:outline-none focus:border-homarr-300 focus:ring-1 focus:ring-homarr-300 transition-all"></select>
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-homarr-200 mb-2">To</label>
+                        <select id="toUnit" class="w-full bg-homarr-600 border border-homarr-500 text-homarr-100 rounded-lg px-4 py-3 text-sm focus:outline-none focus:border-homarr-300 focus:ring-1 focus:ring-homarr-300 transition-all"></select>
+                    </div>
+                </div>
+
+                <div>
+                    <label class="block text-sm font-medium text-homarr-200 mb-2">Result</label>
+                    <div id="result" class="w-full bg-homarr-600 border border-homarr-500 text-homarr-100 rounded-lg px-4 py-3 text-base font-semibold text-center">-</div>
+                </div>
             </div>
 
-            <div>
-                <label class="block text-xs font-medium mb-0.5 text-gray-400">From</label>
-                <input type="number" id="fromValue" class="w-full bg-dark-700 border border-dark-500 text-white rounded p-2 text-sm focus:outline-none focus:border-blue-500" placeholder="Enter value">
-            </div>
-
-            <div>
-                <label class="block text-xs font-medium mb-0.5 text-gray-400">From Unit</label>
-                <select id="fromUnit" class="w-full bg-dark-700 border border-dark-500 text-white rounded p-2 text-sm focus:outline-none focus:border-blue-500"></select>
-            </div>
-
-            <div>
-                <label class="block text-xs font-medium mb-0.5 text-gray-400">To Unit</label>
-                <select id="toUnit" class="w-full bg-dark-700 border border-dark-500 text-white rounded p-2 text-sm focus:outline-none focus:border-blue-500"></select>
-            </div>
-
-            <div>
-                <label class="block text-xs font-medium mb-0.5 text-gray-400">Result</label>
-                <div id="result" class="w-full bg-dark-700 border border-dark-500 text-white rounded p-2 text-sm font-semibold">-</div>
-            </div>
-
-            <button id="convertBtn" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold rounded p-2 text-sm transition-colors">
+            <button id="convertBtn" class="w-full bg-homarr-500 hover:bg-homarr-400 text-homarr-100 font-semibold rounded-lg px-4 py-3 text-sm transition-all hover:scale-[1.02] active:scale-[0.98]">
                 Convert
             </button>
+            <button id="settingsBtn" class="w-full bg-transparent border border-homarr-500 hover:bg-homarr-600 text-homarr-200 font-medium rounded-lg px-4 py-2 text-sm transition-all">
+                Settings
+            </button>
+        </div>
+    </div>
+
+    <div id="settingsModal" class="fixed inset-0 bg-black/70 backdrop-blur-sm hidden items-center justify-center z-50 p-4">
+        <div class="bg-homarr-700 rounded-2xl p-6 w-full max-w-sm shadow-2xl border border-homarr-600">
+            <h2 class="text-xl font-bold text-homarr-100 mb-5">Settings</h2>
+            
+            <div class="space-y-5">
+                <div>
+                    <label class="block text-sm font-medium text-homarr-200 mb-2">Background Color</label>
+                    <div class="flex items-center gap-3">
+                        <input type="color" id="bgColor" class="w-12 h-12 rounded-lg cursor-pointer border-2 border-homarr-500" value="#18181B">
+                        <span id="bgColorHex" class="text-homarr-300 text-sm font-mono">#18181B</span>
+                    </div>
+                </div>
+                
+                <div>
+                    <label class="block text-sm font-medium text-homarr-200 mb-2">Text Color</label>
+                    <div class="flex items-center gap-3">
+                        <input type="color" id="textColor" class="w-12 h-12 rounded-lg cursor-pointer border-2 border-homarr-500" value="#E4E4E7">
+                        <span id="textColorHex" class="text-homarr-300 text-sm font-mono">#E4E4E7</span>
+                    </div>
+                </div>
+                
+                <div>
+                    <label class="block text-sm font-medium text-homarr-200 mb-2">Font Family</label>
+                    <select id="fontFamily" class="w-full bg-homarr-600 border border-homarr-500 text-homarr-100 rounded-lg px-4 py-3 text-sm focus:outline-none focus:border-homarr-300">
+                        <option value="system-ui, -apple-system, sans-serif">System Default</option>
+                        <option value="'Inter', sans-serif">Inter</option>
+                        <option value="serif">Serif</option>
+                        <option value="monospace">Monospace</option>
+                        <option value="'Georgia', serif">Georgia</option>
+                        <option value="'Courier New', monospace">Courier New</option>
+                    </select>
+                </div>
+                
+                <div>
+                    <label class="block text-sm font-medium text-homarr-200 mb-2">Padding: <span id="paddingValue" class="text-homarr-100">24</span>px</label>
+                    <input type="range" id="padding" min="12" max="48" value="24" class="w-full">
+                </div>
+                
+                <div>
+                    <label class="block text-sm font-medium text-homarr-200 mb-2">Border Radius: <span id="radiusValue" class="text-homarr-100">16</span>px</label>
+                    <input type="range" id="borderRadius" min="4" max="32" value="16" class="w-full">
+                </div>
+            </div>
+            
+            <div class="flex gap-3 mt-6">
+                <button id="applySettings" class="flex-1 bg-homarr-500 hover:bg-homarr-400 text-homarr-100 font-semibold rounded-lg px-4 py-3 text-sm transition-all">Apply</button>
+                <button id="closeSettings" class="flex-1 bg-transparent border border-homarr-500 hover:bg-homarr-600 text-homarr-200 font-medium rounded-lg px-4 py-3 text-sm transition-all">Close</button>
+            </div>
         </div>
     </div>
 
@@ -80,56 +141,12 @@
         };
 
         const conversions = {
-            length: {
-                'Meter': 1,
-                'Kilometer': 1000,
-                'Centimeter': 0.01,
-                'Millimeter': 0.001,
-                'Mile': 1609.344,
-                'Yard': 0.9144,
-                'Foot': 0.3048,
-                'Inch': 0.0254
-            },
-            weight: {
-                'Kilogram': 1,
-                'Gram': 0.001,
-                'Milligram': 0.000001,
-                'Pound': 0.453592,
-                'Ounce': 0.0283495,
-                'Ton': 1000
-            },
-            volume: {
-                'Liter': 1,
-                'Milliliter': 0.001,
-                'Gallon': 3.78541,
-                'Quart': 0.946353,
-                'Pint': 0.473176,
-                'Cup': 0.236588,
-                'Fluid Ounce': 0.0295735
-            },
-            area: {
-                'Square Meter': 1,
-                'Square Kilometer': 1000000,
-                'Square Foot': 0.092903,
-                'Square Yard': 0.836127,
-                'Acre': 4046.86,
-                'Hectare': 10000
-            },
-            speed: {
-                'm/s': 1,
-                'km/h': 0.277778,
-                'mph': 0.44704,
-                'knot': 0.514444
-            },
-            time: {
-                'Second': 1,
-                'Minute': 60,
-                'Hour': 3600,
-                'Day': 86400,
-                'Week': 604800,
-                'Month': 2629746,
-                'Year': 31556952
-            }
+            length: { 'Meter': 1, 'Kilometer': 1000, 'Centimeter': 0.01, 'Millimeter': 0.001, 'Mile': 1609.344, 'Yard': 0.9144, 'Foot': 0.3048, 'Inch': 0.0254 },
+            weight: { 'Kilogram': 1, 'Gram': 0.001, 'Milligram': 0.000001, 'Pound': 0.453592, 'Ounce': 0.0283495, 'Ton': 1000 },
+            volume: { 'Liter': 1, 'Milliliter': 0.001, 'Gallon': 3.78541, 'Quart': 0.946353, 'Pint': 0.473176, 'Cup': 0.236588, 'Fluid Ounce': 0.0295735 },
+            area: { 'Square Meter': 1, 'Square Kilometer': 1000000, 'Square Foot': 0.092903, 'Square Yard': 0.836127, 'Acre': 4046.86, 'Hectare': 10000 },
+            speed: { 'm/s': 1, 'km/h': 0.277778, 'mph': 0.44704, 'knot': 0.514444 },
+            time: { 'Second': 1, 'Minute': 60, 'Hour': 3600, 'Day': 86400, 'Week': 604800, 'Month': 2629746, 'Year': 31556952 }
         };
 
         const categorySelect = document.getElementById('category');
@@ -139,68 +156,72 @@
         const resultDiv = document.getElementById('result');
         const convertBtn = document.getElementById('convertBtn');
 
+        Object.keys(units).forEach(cat => categorySelect.add(new Option(cat.charAt(0).toUpperCase() + cat.slice(1), cat)));
+
         function updateUnits() {
             const category = categorySelect.value;
             const unitList = units[category];
-            
             fromUnitSelect.innerHTML = '';
             toUnitSelect.innerHTML = '';
-            
             unitList.forEach(unit => {
                 fromUnitSelect.add(new Option(unit, unit));
                 toUnitSelect.add(new Option(unit, unit));
             });
-            
-            if (unitList.length > 1) {
-                toUnitSelect.selectedIndex = 1;
-            }
-            
+            if (unitList.length > 1) toUnitSelect.selectedIndex = 1;
             resultDiv.textContent = '-';
         }
 
         function convertTemperature(value, from, to) {
-            let celsius;
-            
-            if (from === 'Celsius') celsius = value;
-            else if (from === 'Fahrenheit') celsius = (value - 32) * 5/9;
-            else if (from === 'Kelvin') celsius = value - 273.15;
-            
-            if (to === 'Celsius') return celsius;
-            else if (to === 'Fahrenheit') return celsius * 9/5 + 32;
-            else if (to === 'Kelvin') return celsius + 273.15;
+            let celsius = from === 'Celsius' ? value : from === 'Fahrenheit' ? (value - 32) * 5/9 : value - 273.15;
+            return to === 'Celsius' ? celsius : to === 'Fahrenheit' ? celsius * 9/5 + 32 : celsius + 273.15;
         }
 
         function convert() {
             const value = parseFloat(fromValueInput.value);
-            if (isNaN(value)) {
-                resultDiv.textContent = 'Enter a valid number';
-                return;
-            }
-
+            if (isNaN(value)) { resultDiv.textContent = 'Enter a valid number'; return; }
             const category = categorySelect.value;
             const from = fromUnitSelect.value;
             const to = toUnitSelect.value;
-            
-            let result;
-            
-            if (category === 'temperature') {
-                result = convertTemperature(value, from, to);
-            } else {
-                const conversionTable = conversions[category];
-                const baseValue = value * conversionTable[from];
-                result = baseValue / conversionTable[to];
-            }
-            
+            const result = category === 'temperature' ? convertTemperature(value, from, to) : (value * conversions[category][from]) / conversions[category][to];
             resultDiv.textContent = result.toLocaleString(undefined, { maximumFractionDigits: 6 });
         }
 
         categorySelect.addEventListener('change', updateUnits);
         convertBtn.addEventListener('click', convert);
-        fromValueInput.addEventListener('keypress', (e) => {
-            if (e.key === 'Enter') convert();
-        });
-
+        fromValueInput.addEventListener('keypress', e => { if (e.key === 'Enter') convert(); });
         updateUnits();
+
+        const settingsBtn = document.getElementById('settingsBtn');
+        const settingsModal = document.getElementById('settingsModal');
+        const closeSettings = document.getElementById('closeSettings');
+        const applySettings = document.getElementById('applySettings');
+        const paddingSlider = document.getElementById('padding');
+        const radiusSlider = document.getElementById('borderRadius');
+        const paddingValue = document.getElementById('paddingValue');
+        const radiusValue = document.getElementById('radiusValue');
+        const bgColorInput = document.getElementById('bgColor');
+        const textColorInput = document.getElementById('textColor');
+        const bgColorHex = document.getElementById('bgColorHex');
+        const textColorHex = document.getElementById('textColorHex');
+
+        paddingSlider.addEventListener('input', () => paddingValue.textContent = paddingSlider.value);
+        radiusSlider.addEventListener('input', () => radiusValue.textContent = radiusSlider.value);
+        bgColorInput.addEventListener('input', () => bgColorHex.textContent = bgColorInput.value);
+        textColorInput.addEventListener('input', () => textColorHex.textContent = textColorInput.value);
+
+        settingsBtn.addEventListener('click', () => settingsModal.classList.remove('hidden'));
+        closeSettings.addEventListener('click', () => settingsModal.classList.add('hidden'));
+        settingsModal.addEventListener('click', e => { if (e.target === settingsModal) settingsModal.classList.add('hidden'); });
+
+        applySettings.addEventListener('click', () => {
+            document.body.style.backgroundColor = bgColorInput.value;
+            document.body.style.color = textColorInput.value;
+            document.body.style.fontFamily = document.getElementById('fontFamily').value;
+            const container = document.querySelector('.bg-homarr-700');
+            container.style.padding = paddingSlider.value + 'px';
+            container.style.borderRadius = radiusSlider.value + 'px';
+            settingsModal.classList.add('hidden');
+        });
     </script>
 </body>
 </html>
